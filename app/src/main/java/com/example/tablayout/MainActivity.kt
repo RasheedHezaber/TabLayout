@@ -1,0 +1,57 @@
+ package com.example.tablayout
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.activity_main.*
+
+ class MainActivity : AppCompatActivity() {
+    lateinit var tabLayaut:TabLayout
+     lateinit var tabViewPager:ViewPager2
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        tabLayaut=findViewById(R.id.tab)
+
+        tabViewPager=findViewById(R.id.pager)
+
+
+        tabViewPager.adapter=object :FragmentStateAdapter(this){
+
+            override fun createFragment(position: Int): Fragment {
+               return when(position){
+                   0->FirstFragment.newInstance("","")
+                   1->SecondFragment.newInstance("","")
+                   2->ThirdFragment.newInstance("","")
+                   else ->{SecondFragment.newInstance("","")}
+               }
+
+            }
+            override fun getItemCount(): Int {
+           return 3
+            }
+
+
+
+        }
+
+TabLayoutMediator(tabLayaut,tabViewPager){tab, position ->tab.text=when(position){
+    0->"tab1"
+    1->"tab2"
+    2->"tab3"
+    else->null
+}  }.attach()
+  icon()
+    }
+     private fun icon(){
+         tabLayaut.getTabAt(0)!!.setIcon(R.drawable.ic_baseline_mood_24)
+         tabLayaut.getTabAt(1)!!.setIcon(R.drawable.ic_baseline_mood_bad_24)
+         tabLayaut.getTabAt(2)!!.setIcon(R.drawable.ic_baseline_mood_24)
+     }
+}
